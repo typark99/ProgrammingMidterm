@@ -1,0 +1,17 @@
+{
+    "contents" : "myfunc=function(y, x, ...){\n            data <- data.frame(cbind(y,x))\n            id <- unlist(lapply(1:ncol(x), function(z) combn(1:ncol(x), z, simplify=F)), recursive=FALSE)\n            colNam <- names(data)[-1]\n            formula <- lapply(id, function(f) paste(names(data)[1], \"~\", paste(colNam[f], collapse=\"+\"), sep=\"\"))\n            beta <- matrix(NA, nrow=length(formula), ncol=ncol(x)+1)\n            colnames(beta) <- c(\"(Intercept)\", names(data)[-1])\n            rsq <- rep(NA, length(formula))\n            for (i in 1:length(formula)){\n              fit = lm(formula(formula[[i]]), data)\n              coefs <- coef(fit)\n              beta[i, colnames(beta) %in% names(coefs)] <- coefs[names(coefs) %in% colnames(beta)]\n              rsq[i] <- summary(fit)$r.squared\n            }\n            return(list(coefs=beta, r.squared=rsq))\n          }\n\ny<-myY\nx<-myX\ndata <- data.frame(cbind(y,x))\nid <- unlist(lapply(1:ncol(x), function(z) combn(1:ncol(x), z, simplify=F)), recursive=FALSE)\ncolNam <- names(data)[-1]\nformula <- lapply(id, function(f) paste(names(data)[1], \"~\", paste(colNam[f], collapse=\"+\"), sep=\"\"))\nbeta <- matrix(NA, nrow=length(formula), ncol=ncol(x)+1)\ncolnames(beta) <- c(\"(Intercept)\", names(data)[-1])\nrsq <- rep(NA, length(formula))\nfor (i in 1:length(formula)){\n  fit = lm(formula(formula[[i]]), data)\n  coefs <- coef(fit)\n  beta[i, colnames(beta) %in% names(coefs)] <- coefs[names(coefs) %in% colnames(beta)]\n  rsq[i] <- summary(fit)$r.squared\n}\nreturn(list(coefs=beta, r.squared=rsq))",
+    "created" : 1395435153306.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "224639164",
+    "id" : "13EDF6A5",
+    "lastKnownWriteTime" : 140611316239360,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled3"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

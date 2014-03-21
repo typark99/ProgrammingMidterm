@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Summarizing outputs from fitBMA()\n#'\n#' Returns the output of the posterior expected coefficients and posterior probability that the coefficient is non-zero from fitBMA()\n#'\n#' @param object A \\code{BMA} object\n#' \n#' @return NULL\n#' @author Taeyong Park\n#' @name summary\n#' @examples\n#' set.seed(0520)\n#' myY <- matrix(sample(1:20, 50, replace=TRUE), 50, 1)\n#' myX <- matrix(c(runif(50), runif(50), rnorm(50), rnorm(50)), 50, 4)\n#' summary(fitBMA(myY, myX))\n#' @note This is a summary method for the class BMA\n#' @aliases summary,BMA-method\n#' @rdname summary\n#' @export\nsetMethod(f=\"summary\",  # Since a generic function for summary is available, we do not set a generic function\n          signature=\"BMA\", # Clarify BMA class\n          definition=function(object){ # \"object\" is from fitBMA() under the BMA class\n            cat(\"*** Start Summary (Class-BMA) ***\", \"\\n\", \"\\n\")\n            cat(\"1) Posterior expected value of each coefficient\", \"\\n\")\n            for(i in 1:length(object@output$postCoef)){    \n              cat(\"Coefficient\", i, \":\", round(object@output$postCoef[i],4), \"\\n\") # Of the output of fitBMA(), postCoef indicates the posterior expected value of each coefficient\n            }\n            cat(\"\\n\", \"2) Posterior probability that the coefficient is non-zero\", \"\\n\", sep=\"\")\n            for(i in 1:length(object@output$probSig)){ # for loop enables to separate each model \n              cat(\"Coefficient\", i, \":\", round(object@output$probSig[i],4), \"\\n\") # Of the output of fitBMA(), probSig indicates The posterior probability that the coefficient is non-zero\n            }\n            cat(\"\\n\",\"**** End Summary (Class-BMA) ****\", sep=\"\")\n          }\n)",
+    "created" : 1395429006227.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3429690681",
+    "id" : "9D91C9C",
+    "lastKnownWriteTime" : 1395426464,
+    "path" : "~/GitHub/ProgrammingMidterm/bmaPack/R/summary.R",
+    "project_path" : "R/summary.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

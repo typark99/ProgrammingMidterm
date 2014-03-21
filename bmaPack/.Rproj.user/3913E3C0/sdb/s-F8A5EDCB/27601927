@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Plotting outputs from fitBMA()\n#'\n#' Returns the output of the posterior expected coefficients and posterior probability that the coefficient s non-zero from fitBMA()\n#'\n#' @param x A \\code{BMA} object\n#' \n#' @return NULL\n#' @author Taeyong Park\n#' @name plot\n#' @examples\n#' set.seed(0520)\n#' myY <- matrix(sample(1:20, 50, replace=TRUE), 50, 1)\n#' myX <- matrix(c(runif(50), runif(50), rnorm(50), rnorm(50)), 50, 4)\n#' plot(fitBMA(myY, myX))\n#' @note This is a plot method for the class BMA\n#' @aliases plot,BMA-method\n#' @rdname plot\n#' @export\nsetMethod(f=\"plot\",   # Since a generic function for plot is available, we do not set a generic function\n          signature=\"BMA\", # Clarify BMA class\n          definition=function(x){  \n            par(mfrow=c(1,2))\n            plot(1:length(x@output$postCoef), x@output$postCoef, # This will plot postCoef for each coefficient\n                 pch=\"+\", col=\"darkred\", cex=2,\n                 xlim=c(0.5, length(x@output$postCoef)+0.5), # This is just for a better-looking\n                 xlab=\"Coefficient\", ylab=\"Posterior expected value\",\n                 main=\"The posterior expected value \\n of coefficient\")\n            plot(1:length(x@output$probSig), x@output$probSig, # This will plot probSig for each coefficient\n                 pch=\"+\", col=\"darkred\", cex=2,\n                 xlim=c(0.5, length(x@output$probSig)+0.5), # This is just for a better-looking\n                 xlab=\"Coefficient\", ylab=\"Probability\",\n                 main=\"The posterior probability \\n of non-zero coefficient\")\n          }\n)",
+    "created" : 1395428966421.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4066918890",
+    "id" : "27601927",
+    "lastKnownWriteTime" : 1395426555,
+    "path" : "~/GitHub/ProgrammingMidterm/bmaPack/R/plot.R",
+    "project_path" : "R/plot.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

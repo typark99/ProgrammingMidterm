@@ -25,31 +25,31 @@ setGeneric(name="fitBMA",  # setGeneric sets a generic function
 
 #' @export
 setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
-          definition=function(Y, X, g=3){ # g=3 is default 
+          definition= function(Y, X, g=3, parallel=FALSE, ...){ # g=3 is default for the calculation of the posterior expected value; parallel=FALSE is default for running function in parallel
             Y <- (Y-mean(Y))/sd(Y) # Standardize dependent variable
             X <- (X-mean(X))/sd(X) # Standardize covariates
-            Z <- list()  # Z will contain every combination of X
-            coefficientsList <- list() # This will be transformed to coefficients which is a matrix
-            coefficients<-matrix(NA, ncol(X), ncol(X)) # We want the output of coefficients as a matrix; Since we will run regressions without constant, the output has the same number of rows and columns
-            R2 <- eBetaModel <- bayesF <- numeric() # Empty numerics for several statistics
-            for (i in 2:ncol(X)){ # The first elements are not looped to make it easy to create every combination of the covariates
-              Z[[1]] <- X[,1]  
-              Z[[i]] <- cbind(X[,i],Z[[i-1]]) # This ensures that Z will contain every combination of the covariates
-              coefficientsList[[1]] <- summary(lm(Y ~ Z[[1]]-1))$coef[,1] # The first element for coefficient is not looped 
-              coefficientsList[[i]] <- summary(lm(Y ~ Z[[i]]-1))$coef[,1] # We should run regressions with no constant
-              coefficients[1,] <- c(coefficientsList[[1]], rep(NA, ncol(X)-length(coefficientsList[[1]]))) # Now, we want to transform coef to the form of matrix
-              coefficients[i,] <- c(coefficientsList[[i]], rep(NA, ncol(X)-length(coefficientsList[[i]]))) # An empty cell will be expressed as "NA"
-              R2[1] <- summary(lm(Y ~ Z[[1]]-1))$r.squared # The first element for R2 is not looped
-              R2[i] <- summary(lm(Y ~ Z[[i]]-1))$r.squared # We should run regressions with no constant
-            }
-            for (k in 1:ncol(X)){
-              p=k  # p indicates the number of covariates of the model under consideration
+            data <- data.frame(cbind(Y,X)) # Create a data set
+            p <- ncol(X) # p indicates the number of covariates of the model under consideration
+            id <- unlist(lapply(1:p, function(z) combn(1:p, z, simplify=F)), recursive=FALSE) # This ensures that Z will contain every combination of the covariates.
+            colNam <- names(data)[-1] # Define the name of columns of data
+            formula <- llply(id, function(f) paste(names(data)[1],"~", paste(colNam[f], collapse="+"),"-1", sep=""), .parallel=parallel) # formula will contain every combination of regressions. It is important to include "-1" to ensure that we will drop the intercept when we run regressions using this formula 
+            formula[[2^p]] <- paste(names(data)[1],"~", "1", sep="")   # The last element of formula will be the null model (i.e., The model including only the intercept) Since we standardized the data input, the regression coefficient of this intercept will be zero
+            beta <- matrix(NA, nrow=length(formula), ncol=ncol(X))   # This will contain the coefficients. Since we will not include the intercept, the number of columns of this matrix is the same as the number of colums of the data
+            colnames(beta) <- c(names(data)[-1]) 
+            R2 <- eBetaModel <- bayesF <- numeric() # Empty numerics for several statistics 
+            for (i in 1:length(formula)){ # This for loop ensures that we run regressions of every possible combination
+              fit = lm(formula(formula[[i]]), data)  
+              coefficients <- coef(fit) 
+              beta[i, colnames(beta) %in% names(coefficients)] <- coefficients[names(coefficients) %in% colnames(beta)] # The rows of beta contain coefficients for each iteration
+              R2[i] <- summary(fit)$r.squared # This returns the value of R^2
+            } 
+            for (k in 1:length(formula)){
+              p=p  # p indicates the number of covariates of the model under consideration
               n=nrow(X)  # n indicates the number of rows of input data for explnatory variables
               bayesF[k] <- (1+g)^((n-p-1)/2)*(1+g*(1-R2[k]))^(-(n-1)/2) # This returns Bayes's factor for the models; This is the posterior model odds for each model
             }
-            for (j in 1:ncol(X)){
-              eBetaModel[j] <- mean((g/(g+1))*coefficients[j:ncol(X),1]) # This returns E(\beta_j|M_k) from Slide 3
-            }
+            beta[is.na(beta)] <- 0 # This is to make it possible to caluclate eBetaModel below by replacing NA with 0
+            eBetaModel <- (g/(g+1))*beta # This returns E(\beta_j|M_k) from Slide 3
             postModel <- bayesF/sum(bayesF) # Posterior probability of the model; The total weight assigned to all models that include each variable; This gives us the posterior probability that the coefficient is non-zero
             postCoef <- postModel*eBetaModel # Posterior expected value of each coefficient
             output <- list(coefficients, R2, bayesF, postCoef, postModel)  
