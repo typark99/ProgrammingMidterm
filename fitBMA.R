@@ -25,7 +25,7 @@ setGeneric(name="fitBMA",  # setGeneric sets a generic function
 
 #' @export
 setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
-          definition=function(Y, X, g){
+          definition=function(Y, X, g=3){ # g=3 is default 
             Y <- (Y-mean(Y))/sd(Y) # Standardize dependent variable
             X <- (X-mean(X))/sd(X) # Standardize covariates
             Z <- list()  # Z will contain every combination of X
@@ -45,15 +45,15 @@ setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
             for (k in 1:ncol(X)){
               p=k
               n=nrow(X)
-              bayesF[k] <- (1+g)^((n-p-1)/2)*(1+g*(1-R2[k]))^(-(n-1)/2) # This returns Bayes's factor for the models
+              bayesF[k] <- (1+g)^((n-p-1)/2)*(1+g*(1-R2[k]))^(-(n-1)/2) # This returns Bayes's factor for the models; This is the posterior model odds for each model
             }
             for (j in 1:ncol(X)){
               eBetaModel[j] <- mean((g/(g+1))*coefficients[j:ncol(X),1]) # This returns E(\beta_j|M_k) from Slide 3
             }
-            postModel <- bayesF/sum(bayesF) # Posterior probability of the model
+            postModel <- bayesF/sum(bayesF) # Posterior probability of the model; The total weight assigned to all models that include each variable 
             postCoef <- postModel*eBetaModel # Posterior expected value of each coefficient
-            output <- list(coefficients, R2, postCoef) 
-            names(output) <- c("coefficients", "R.squared", "postCoef")            
+            output <- list(coefficients, R2, bayesF, postCoef, postModel)  
+            names(output) <- c("coefficients", "R.squared", "postOdds", "postCoef", "probSig")            
             return((new("BMA", Y=Y, X=X, output=output)))
           }
 )
