@@ -1,6 +1,6 @@
 #' Fitting BMA
 #'
-#' Runs Bayesian Modeling Average given the regressions for every combination of the input covariates with no constant
+#' Performs Bayesian Model Average given the linear regressions for every combination of the input covariates with no constant
 #'
 #' @param Y A matrix object; The number of columns is one; The number of rows depends on the data 
 #' @param X A matrix object; The number of rows is the same as that of \code{Y}; The number of columns depends on the data

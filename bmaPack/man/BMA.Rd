@@ -4,7 +4,7 @@
 \alias{getBMA}
 \alias{getBMA,BMA-method}
 \alias{initialize,BMA-method}
-\title{A Bayesian Modeling Average object}
+\title{A Bayesian Model Average object}
 \usage{
 getBMA(object = "BMA")
 }

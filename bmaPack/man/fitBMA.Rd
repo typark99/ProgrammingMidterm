@@ -19,8 +19,9 @@ An object of class Regressions containing
 R.squared}
 }
 \description{
-Runs Bayesian Modeling Average given the regressions for
-every combination of the input covariates with no constant
+Performs Bayesian Model Average given the linear
+regressions for every combination of the input covariates
+with no constant
 }
 \examples{
 set.seed(0520)

@@ -1,9 +1,10 @@
 Package: bmaPack
 Type: Package
-Title: Performs Bayesian Model Average (BMA) for linear models 
+Title: Performs Bayesian Model Average (BMA) for linear models
 Version: 1.0
 Date: 2014-03-21
 Author: Taeyong Park
 Maintainer: Taeyong Park <typark99@gmail.com>
-Description: The bmaPack package runs linear regressions for every combination of input covariates and performs Bayesian Model Average 
+Description: The bmaPack package runs linear regressions for every combination
+    of input covariates and performs Bayesian Model Average
 License: N/A

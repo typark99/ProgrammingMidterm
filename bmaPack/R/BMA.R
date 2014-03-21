@@ -1,4 +1,4 @@
-#' A Bayesian Modeling Average object 
+#' A Bayesian Model Average object 
 #' 
 #' Object of class \code{BMA} are created by the \code{fitBMA}, \code{summary} and \code{plot} functions
 #'
