@@ -7,11 +7,12 @@ setwd("~/GitHub/ProgrammingMidterm") # Set my working directory
 
 ## The R directory is in this order:
 
-# bmaPack.r
 # BMA.R
+# bmaPack.r
 # fitBMA.R
 # plot.R
 # summary.R
+# z.exampleData.R
 
 
 ## This can be run many times as the code is updates
