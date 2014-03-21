@@ -32,6 +32,7 @@ setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
             p <- ncol(X) # p indicates the number of covariates of the model under consideration
             id <- unlist(lapply(1:p, function(z) combn(1:p, z, simplify=F)), recursive=FALSE) # This ensures that Z will contain every combination of the covariates.
             colNam <- names(data)[-1] # Define the name of columns of data
+            require(plyr)
             formula <- llply(id, function(f) paste(names(data)[1],"~", paste(colNam[f], collapse="+"),"-1", sep=""), .parallel=parallel) # formula will contain every combination of regressions. It is important to include "-1" to ensure that we will drop the intercept when we run regressions using this formula 
             formula[[2^p]] <- paste(names(data)[1],"~", "1", sep="")   # The last element of formula will be the null model (i.e., The model including only the intercept) Since we standardized the data input, the regression coefficient of this intercept will be zero
             beta <- matrix(NA, nrow=length(formula), ncol=ncol(X))   # This will contain the coefficients. Since we will not include the intercept, the number of columns of this matrix is the same as the number of colums of the data
