@@ -43,8 +43,8 @@ setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
               R2[i] <- summary(lm(Y ~ Z[[i]]-1))$r.squared # We should run regressions with no constant
             }
             for (k in 1:ncol(X)){
-              p=k
-              n=nrow(X)
+              p=k  # p indicates the number of covariates of the model under consideration
+              n=nrow(X)  # n indicates the number of rows of input data for explnatory variables
               bayesF[k] <- (1+g)^((n-p-1)/2)*(1+g*(1-R2[k]))^(-(n-1)/2) # This returns Bayes's factor for the models; This is the posterior model odds for each model
             }
             for (j in 1:ncol(X)){

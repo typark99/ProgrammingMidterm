@@ -1,8 +1,8 @@
-#' Returning output from fitBMA()
+#' Summarizing outputs from fitBMA()
 #'
-#' Returns the output of the posterior expected coefficients and posterior probability that the coefficient s non-zero from fitBMA()
+#' Returns the output of the posterior expected coefficients and posterior probability that the coefficient is non-zero from fitBMA()
 #'
-#' @param x A \code{BMA} object
+#' @param object A \code{BMA} object
 #' 
 #' @return NULL
 #' @author Taeyong Park
@@ -16,12 +16,12 @@
 #' @aliases summary,BMA-method
 #' @rdname summary
 #' @export
-setMethod(f="summary",  # Since print is a built-in function we do not set a generic function, and define the print function used under the Regressions class  
-          signature="BMA",
-          definition=function(object){
+setMethod(f="summary",  # Since a generic function for summary is available, we do not set a generic function
+          signature="BMA", # Clarify BMA class
+          definition=function(object){ # "object" is from fitBMA() under the BMA class
             cat("*** Start Summary (Class-BMA) ***", "\n", "\n")
             cat("1) Posterior expected value of each coefficient", "\n")
-            for(i in 1:length(object@output$postCoef)){  
+            for(i in 1:length(object@output$postCoef)){    
               cat("Coefficient", i, ":", round(object@output$postCoef[i],4), "\n") # Of the output of fitBMA(), postCoef indicates the posterior expected value of each coefficient
             }
             cat("\n", "2) Posterior probability that the coefficient is non-zero", "\n", sep="")
