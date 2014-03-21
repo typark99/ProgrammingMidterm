@@ -25,13 +25,13 @@ setGeneric(name="fitBMA",  # setGeneric sets a generic function
 
 #' @export
 setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
-          definition=function(Y, X, ...){
+          definition=function(Y, X, g){
             Y <- (Y-mean(Y))/sd(Y) # Standardize dependent variable
             X <- (X-mean(X))/sd(X) # Standardize covariates
             Z <- list()  # Z will contain every combination of X
             coefficientsList <- list() # This will be transformed to coefficients which is a matrix
             coefficients<-matrix(NA, ncol(X), ncol(X)) # We want the output of coefficients as a matrix; Since we will run regressions without constant, the output has the same number of rows and columns
-            R2 <- numeric() # Empty numeric for R2
+            R2 <- eBetaModel <- bayesF <- numeric() # Empty numerics for several statistics
             for (i in 2:ncol(X)){ # The first elements are not looped to make it easy to create every combination of the covariates
               Z[[1]] <- X[,1]  
               Z[[i]] <- cbind(X[,i],Z[[i-1]]) # This ensures that Z will contain every combination of the covariates
@@ -42,8 +42,18 @@ setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
               R2[1] <- summary(lm(Y ~ Z[[1]]-1))$r.squared # The first element for R2 is not looped
               R2[i] <- summary(lm(Y ~ Z[[i]]-1))$r.squared # We should run regressions with no constant
             }
-            output <- list(coefficients, R2)
-            names(output) <- c("coefficients", "R.squared")            
+            for (k in 1:ncol(X)){
+              p=k
+              n=nrow(X)
+              bayesF[k] <- (1+g)^((n-p-1)/2)*(1+g*(1-R2[k]))^(-(n-1)/2) # This returns Bayes's factor for the models
+            }
+            for (j in 1:ncol(X)){
+              eBetaModel[j] <- mean((g/(g+1))*coefficients[j:ncol(X),1]) # This returns E(\beta_j|M_k) from Slide 3
+            }
+            postModel <- bayesF/sum(bayesF) # Posterior probability of the model
+            postCoef <- postModel*eBetaModel # Posterior expected value of each coefficient
+            output <- list(coefficients, R2, postCoef) 
+            names(output) <- c("coefficients", "R.squared", "postCoef")            
             return((new("BMA", Y=Y, X=X, output=output)))
           }
 )
