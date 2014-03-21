@@ -13,7 +13,7 @@
 #' set.seed(0520)
 #' myY <- matrix(sample(1:20, 50, replace=TRUE), 50, 1) 
 #' myX <- matrix(c(runif(50), runif(50), rnorm(50), rnorm(50)), 50, 4)
-#' runReg(Y=myY, X=myX)
+#' fitBMA(Y=myY, X=myX)
 #' @seealso \code{\link{summary}}
 #' @rdname fitBMA
 #' @aliases BMA,ANY-method  
@@ -50,10 +50,10 @@ setMethod(f="fitBMA",  # setMethod specifies the function fitBMA()
             for (j in 1:ncol(X)){
               eBetaModel[j] <- mean((g/(g+1))*coefficients[j:ncol(X),1]) # This returns E(\beta_j|M_k) from Slide 3
             }
-            postModel <- bayesF/sum(bayesF) # Posterior probability of the model; The total weight assigned to all models that include each variable 
+            postModel <- bayesF/sum(bayesF) # Posterior probability of the model; The total weight assigned to all models that include each variable; This gives us the posterior probability that the coefficient is non-zero
             postCoef <- postModel*eBetaModel # Posterior expected value of each coefficient
             output <- list(coefficients, R2, bayesF, postCoef, postModel)  
-            names(output) <- c("coefficients", "R.squared", "postOdds", "postCoef", "probSig")            
+            names(output) <- c("coefficients", "R.squared", "postOdds", "postCoef", "probSig")  # postOdds from bayesF; probSig from postModel
             return((new("BMA", Y=Y, X=X, output=output)))
           }
 )
