@@ -1,0 +1,17 @@
+{
+    "contents" : "## Load libraries and set working directory\nlibrary(devtools)\nlibrary(roxygen2)\nsetwd(\"~/GitHub/ProgrammingMidterm\") # Set my working directory\n\n## At this point put the *.R files into the correct directories and edit the DESCRIPTION file\n\n## The R directory is in this order:\n\n# bmaPack.r\n# BMA.R\n# fitBMA.R\n# plot.R\n# summary.R\n\n\n## This can be run many times as the code is updates\ncurrent.code <- as.package(\"bmaPack\")\nload_all(current.code) # Load all of the functions so you can use them\ndocument(current.code) # Make the help files\ncheck(current.code) # Run the R checks\ninstall(pkg=current.code, local=TRUE) # Install the package\n\n",
+    "created" : 1395427194696.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3362204822",
+    "id" : "19557736",
+    "lastKnownWriteTime" : 1395427507,
+    "path" : "~/GitHub/ProgrammingMidterm/developmentDocument.R",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

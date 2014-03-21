@@ -1,0 +1,8 @@
+export(fitBMA)
+export(getBMA)
+exportClasses(BMA)
+exportMethods(fitBMA)
+exportMethods(getBMA)
+exportMethods(initialize)
+exportMethods(plot)
+exportMethods(summary)

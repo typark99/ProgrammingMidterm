@@ -1,0 +1,17 @@
+{
+    "contents" : "#' bmaPack\n#'\n#' The bmaPack performs Bayesian modeling average (BMA) \n#' @name bmaPack\n#' @docType package\n#' @author  Taeyong Park: \\email{typark99@@gmail.com} \nNULL",
+    "created" : 1395427065577.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "739731749",
+    "id" : "BB2CB70E",
+    "lastKnownWriteTime" : 1395427168,
+    "path" : "~/GitHub/ProgrammingMidterm/bmaPack/R/bmaPack.R",
+    "project_path" : "R/bmaPack.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
