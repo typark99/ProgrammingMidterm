@@ -31,3 +31,6 @@ setMethod(f="summary",  # Since a generic function for summary is available, we 
             cat("\n","**** End Summary (Class-BMA) ****", sep="")
           }
 )
+
+
+### Not really a very good summary.  More of just ...everything.  If there were 20 variables, this would take a year to print out on my screen.

@@ -8,3 +8,10 @@ Maintainer: Taeyong Park <typark99@gmail.com>
 Description: The bmaPack package runs linear regressions for every combination
     of input covariates and performs Bayesian Model Average
 License: N/A
+Collate:
+    'BMA.R'
+    'bmaPack.R'
+    'fitBMA.R'
+    'plot.R'
+    'summary.R'
+    'z.exampleData.R'

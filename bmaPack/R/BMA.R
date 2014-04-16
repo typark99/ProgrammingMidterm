@@ -19,7 +19,10 @@ setClass(Class="BMA",
            Y = "matrix", # Input
            X = "matrix", # Input
            output = "list" # Output: This will include the output from fitBMA() 
-         ),
+         )
+## What is even the point  of specifying a class ife everything specified is going to get dumped into an "output" slot
+
+         ,
          prototype = prototype(
            Y = matrix(nrow=0, ncol=0), # An empty matrix
            X = matrix(nrow=0, ncol=0), # An empty matrix
@@ -35,6 +38,8 @@ setMethod("initialize", "BMA", # We begin by initializing BMA class
           }
 ) 
 
+
+## I don't understand the point of this function.  Not really getting a BMA, but the output of the fitted model
 #' @rdname BMA
 #' @export 
 setGeneric("getBMA", # setGeneric sets a generic function
